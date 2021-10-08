@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const logger = require('morgan');
-const albumsRouter = require('./controllers/albums');
+const controllers = require('./controllers');
+
+require('dotenv').config();
 
 const port = process.env.PORT || 3001;
 
@@ -12,7 +14,8 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use('/albums', albumsRouter);
+/* === Routes === */
+app.use('/albums', controllers.album);
 
 app.listen(port, () => {
   console.log('Listening on: ' + port);
