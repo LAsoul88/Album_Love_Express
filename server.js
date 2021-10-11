@@ -2,23 +2,23 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const logger = require('morgan');
-const controllers = require('./controllers');
+const routes = require('./routes');
 
 require('dotenv').config();
 
-const port = process.env.PORT || 3001;
+const PORT = process.env.PORT || 4000;
 
-app.use(logger('dev'));
 app.use(cors());
+app.use(logger('dev'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 /* === Routes === */
-app.use('/albums', controllers.album);
+app.use('/home', routes.albums);
 
-app.listen(port, () => {
-  console.log('Listening on: ' + port);
+app.listen(PORT, () => {
+  console.log('Listening on port:', PORT);
 });
 
 module.exports = app;
