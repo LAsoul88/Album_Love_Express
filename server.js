@@ -7,6 +7,8 @@ const _getAlbum = require('./SpotifyAPI/_getAlbum');
 
 const port = process.env.PORT || 4000;
 
+const controllers = require('./controllers');
+
 app.use(cors());
 app.use(logger('dev'));
 
@@ -15,14 +17,14 @@ app.use(express.json());
 
 
 /* === Routes === */
-// app.get('/', (req, res) => {
-//   return res.redirect('/albums')
-// });
+// app.use('/', controllers.auth);
+app.use('/albums', controllers.album);
+// app.use('/comments', controllers.comment);
+// app.use('/users', controllers.user);
 
 app.post('/albums', async (req, res, next) => {
   try {
-    console.log('here we are again')
-    const query = await req.body.query;
+    const query = req.body.query;
 
     if (!query) {
       const albums = null;
@@ -30,7 +32,7 @@ app.post('/albums', async (req, res, next) => {
     }
 
     const albumList = await _getResults(query);
-    const albums = await albumList.data.albums.items;
+    const albums = albumList.data.albums.items;
     
     return res.send(albums);
   } catch (error) {
@@ -41,7 +43,6 @@ app.post('/albums', async (req, res, next) => {
 
 app.post('/albums/:id', async (req, res, next) => {
   try {
-    console.log('======== we got here ========');
     const query = await req.body.query;
     
     const albumObject = await _getAlbum(query);
