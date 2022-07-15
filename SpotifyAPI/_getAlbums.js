@@ -1,8 +1,8 @@
 const axios = require('axios');
 
-const getToken = require('./spotify_auth');
+const _getToken = require('./_getToken');
 
-const getAlbums = async (arr) => {
+const _getAlbums = async (arr) => {
   let url = `https://api.spotify.com/v1/albums?ids=`;
   for (let i = 0; i < arr.length; i++) {
     if (i === arr.length - 1) {
@@ -15,7 +15,7 @@ const getAlbums = async (arr) => {
     console.log('bad url');
     return;
   } else {
-    const token = await getToken();
+    const token = await _getToken();
     const targets = await axios.get(url, {
       headers: {
         'Authorization': 'Bearer ' + token
@@ -25,4 +25,4 @@ const getAlbums = async (arr) => {
   }
 };
 
-module.exports = getAlbums;
+module.exports = _getAlbums;

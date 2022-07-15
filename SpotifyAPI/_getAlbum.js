@@ -1,8 +1,8 @@
 const axios = require('axios');
 const _getToken = require('./_getToken');
 
-const _getAlbum = async (id) => {
-  
+const _getAlbum = async id => {
+  console.log("get album id:", id)
   const token = await _getToken();
   return new Promise((resolve, reject) => {
     axios(`https://api.spotify.com/v1/albums/${id}`, {

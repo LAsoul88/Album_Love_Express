@@ -13,7 +13,7 @@ const _getResults = async query => {
         resolve(albumResponse);
       })
       .catch(error => {
-        console.error('error', error);
+        console.error('_getResults', error);
         reject(error)
       });
     });
