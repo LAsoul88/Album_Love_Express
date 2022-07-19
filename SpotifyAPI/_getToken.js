@@ -1,7 +1,7 @@
 const axios = require('axios');
 require('dotenv').config();
 
-const clientId = '2f212092437640b08c1577de2c87a6b3';
+const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 
 const _getToken = async () => {
