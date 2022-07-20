@@ -1,5 +1,6 @@
 const _getResults = require('../SpotifyAPI/_getResults');
 const _getAlbum = require('../SpotifyAPI/_getAlbum');
+const _getAlbums = require('../SpotifyAPI/_getAlbums');
 const { Comment, User } = require('../models');
 
 exports.albums = async (req, res) => {
@@ -31,16 +32,31 @@ exports.album = async (req, res) => {
 
 exports.comments = async (req, res) => {
   try {
-    const comments = await Comment
+    const allComments = await Comment
       .find({})
       .populate("userId")
       .sort({
         createdAt: -1
       });
+    
+    const latestComments = allComments.slice(0, 10);
 
-    const latestComments = comments.slice(0, 10);
+    const commentAlbumIds = latestComments.map(comment => comment.albumId);
 
-    return res.json(latestComments);
+    const commentAlbums = await _getAlbums(commentAlbumIds);
+
+    const commentAlbumsObj = {};
+    for (const album of commentAlbums) {
+      commentAlbumsObj[album.id] = album;
+    }
+    const comments = [];
+    for (const comment of latestComments) {
+      const album = { album: commentAlbumsObj[comment.albumId] };
+      const commentWithAlbum = { ...comment, ...album };
+      comments.push(commentWithAlbum);
+    }
+
+    return res.json(comments);
   } catch (error) {
     console.log(error);
   }

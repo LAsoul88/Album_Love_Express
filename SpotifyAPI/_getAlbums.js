@@ -2,13 +2,13 @@ const axios = require('axios');
 
 const _getToken = require('./_getToken');
 
-const _getAlbums = async (arr) => {
+const _getAlbums = async albumIds => {
   let url = `https://api.spotify.com/v1/albums?ids=`;
-  for (let i = 0; i < arr.length; i++) {
-    if (i === arr.length - 1) {
-      url += arr[i] + '&market=US'
+  for (let i = 0; i < albumIds.length; i++) {
+    if (i === albumIds.length - 1) {
+      url += albumIds[i] + '&market=US';
     } else {
-    url += arr[i] + '%2C';
+    url += albumIds[i] + '%2C';
   }
 }
   if (url === `https://api.spotify.com/v1/albums?ids=`) {
